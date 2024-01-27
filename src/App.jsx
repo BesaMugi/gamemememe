@@ -1,12 +1,12 @@
 import React from "react";
-import ResourceTree from "./pages/Resources/resourceTree";
+import Resource from "./pages/Resources/resource";
 
 function App() {
 
 
   return (
     <>
-      <ResourceTree />
+      <Resource />
     </>
   );
 }
