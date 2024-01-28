@@ -1,0 +1,49 @@
+.container {
+
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+    }
+
+    h1 {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        margin-top: 10px;
+
+        &:hover {
+            background-color: #45a049;
+        }
+    }
+
+    .chest {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .shop {
+        margin-top: 10px;
+        font-size: 16px;
+    }
+
+    .tools,
+    .weapons,
+    .workers {
+        margin-top: 20px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+}

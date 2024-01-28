@@ -1,25 +1,52 @@
 .container {
-  margin-top: 10px;
-  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
 
-  .header_resource {
-    text-decoration: underline;
+  .energy {
+    font-size: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    text-align: center;
   }
 
   .cards {
-    // margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+
+    .first_resource {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      // border-bottom: 2px solid grey;
+      width: 100%;
+    }
+
+    .card_harvest {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
 
     .card {
       margin: 0 10px;
       border-radius: 8px;
       border: 1px solid grey;
-      width: 200px;
+      width: 260px;
       text-align: center;
       padding: 5px;
-      margin-top: 10px;
+      margin-bottom: 10px;
+
+      &:hover {
+        border-color: #9f64ff;
+      }
+
+      img {
+        margin-top: 10px;
+        width: 60px;
+      }
 
       button {
         border-radius: 8px;
@@ -29,8 +56,9 @@
         font-weight: 500;
         background-color: #1a1a1a;
         cursor: pointer;
-        margin-top: 10px;
         user-select: none;
+        margin: 10px;
+        width: 100px;
 
         &:hover {
           border-color: #646cff;
