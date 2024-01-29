@@ -11,7 +11,10 @@ const Resource = () => {
 
   return (
     <div className={styles.header_resource}>
-      <Link to={"/"} className={isActive("/") ? styles.active : ""}>
+      <Link to={"/profile"} className={isActive("/profile") ? styles.active : ""}>
+        <p>Профиль</p>
+      </Link>
+      <Link to={"/resources"} className={isActive("/resources") ? styles.active : ""}>
         <p>Ресурсы</p>
       </Link>
       <Link to={"/materials"} className={isActive("/materials") ? styles.active : ""}>
@@ -29,17 +32,6 @@ const Resource = () => {
       <Link to={"/upgrades"} className={isActive("/upgrades") ? styles.active : ""}>
         <p>Улучшения</p>
       </Link>
-      {/* возможно просто перенести Инструменты Оружие Работяг в магазин и в инвентарь */}
-      {/* <Link to={"/tools"} className={isActive("/tools") ? styles.active : ""}>
-        <p>Инструменты *</p>
-      </Link>
-      <Link to={"/weapons"} className={isActive("/weapons") ? styles.active : ""}>
-        <p>Оружия *</p>
-      </Link>
-      <Link to={"/workers"} className={isActive("/workers") ? styles.active : ""}>
-        <p>Работяги *</p>
-      </Link> */}
-      {/* возможно просто перенести Инструменты Оружие Работяг в магазин и в инвентарь */}
     </div>
   );
 }

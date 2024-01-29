@@ -103,7 +103,7 @@ const Resources = () => {
     try {
       setLoadingTree(true);
       await dispatch(addResource("Дуб"));
-      handleEnergyChange(-1);
+      handleEnergyChange(-2.5);
       dispatch(fetchResources());
     } catch (error) {
       console.error("Ошибка при добавлении ресурса:", error);
@@ -116,7 +116,7 @@ const Resources = () => {
     try {
       setLoadingStone(true);
       await dispatch(addResource("Камень"));
-      handleEnergyChange(-1);
+      handleEnergyChange(-2.8);
       dispatch(fetchResources());
     } catch (error) {
       console.error("Ошибка при добавлении ресурса:", error);
@@ -129,7 +129,7 @@ const Resources = () => {
     try {
       setLoadingBirch(true);
       await dispatch(addResource("Береза"));
-      handleEnergyChange(-1);
+      handleEnergyChange(-2);
       dispatch(fetchResources());
     } catch (error) {
       console.error("Ошибка при добавлении ресурса:", error);
@@ -142,7 +142,7 @@ const Resources = () => {
     try {
       setLoadingIron(true);
       await dispatch(addResource("Железо"));
-      handleEnergyChange(-1);
+      handleEnergyChange(-4);
       dispatch(fetchResources());
     } catch (error) {
       console.error("Ошибка при добавлении ресурса:", error);
@@ -155,7 +155,7 @@ const Resources = () => {
     try {
       setLoadingSand(true);
       await dispatch(addResource("Песок"));
-      handleEnergyChange(-1);
+      handleEnergyChange(-1.5);
       dispatch(fetchResources());
     } catch (error) {
       console.error("Ошибка при добавлении ресурса:", error);
@@ -168,7 +168,7 @@ const Resources = () => {
     try {
       setLoadingGravel(true);
       await dispatch(addResource("Гравий"));
-      handleEnergyChange(-1);
+      handleEnergyChange(-1.5);
       dispatch(fetchResources());
     } catch (error) {
       console.error("Ошибка при добавлении ресурса:", error);
@@ -177,11 +177,24 @@ const Resources = () => {
     }
   };
 
+  const handleClickSequoia = async () => {
+    try {
+      setLoadingSequoia(true);
+      await dispatch(addResource("Секвойя"));
+      handleEnergyChange(-10);
+      dispatch(fetchResources());
+    } catch (error) {
+      console.error("Ошибка при добавлении ресурса:", error);
+    } finally {
+      setLoadingSequoia(false);
+    }
+  };
+
   const handleClickCopper = async () => {
     try {
       setLoadingCopper(true);
       await dispatch(addResource("Медь"));
-      handleEnergyChange(-1);
+      handleEnergyChange(-4);
       dispatch(fetchResources());
     } catch (error) {
       console.error("Ошибка при добавлении ресурса:", error);
@@ -189,19 +202,6 @@ const Resources = () => {
       setLoadingCopper(false);
     }
   };
-
-  const handleClickSequoia = async () => {
-    try {
-      setLoadingSequoia(true);
-      await dispatch(addResource("Секвойя"));
-      handleEnergyChange(-1);
-      dispatch(fetchResources());
-    } catch (error) {
-      console.error("Ошибка при добавлении ресурса:", error);
-    } finally {
-      setLoadingSequoia(false);
-    }
-  }
 
   useEffect(() => {
     dispatch(fetchResources());

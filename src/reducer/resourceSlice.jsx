@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchResources = createAsyncThunk("fetch/Resources", async (_, thunkAPI) => {
   try {
-    const res = await fetch("http://localhost:4004/resources");
+    const res = await fetch("http://localhost:4000/resources");
     const resources = await res.json();
     return resources;
   } catch (error) {
@@ -14,7 +14,7 @@ export const addResource = createAsyncThunk(
   "add/Resource",
   async (resourceName, thunkAPI) => {
     try {
-      const res = await fetch("http://localhost:4004/resources", {
+      const res = await fetch("http://localhost:4000/resources", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export const removeResource = createAsyncThunk(
   "remove/Resource",
   async (resourceName, thunkAPI) => {
     try {
-      const res = await fetch(`http://localhost:4004/resources/${resourceName}`, {
+      const res = await fetch(`http://localhost:4000/resources/${resourceName}`, {
         method: "DELETE",
       });
 
@@ -46,8 +46,6 @@ export const removeResource = createAsyncThunk(
     }
   }
 );
-
-// ... Ваш импорт и код ...
 
 const resourceSlice = createSlice({
   name: "resources",
