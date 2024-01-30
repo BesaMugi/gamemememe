@@ -2,7 +2,18 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchResources = createAsyncThunk("fetch/Resources", async (_, thunkAPI) => {
   try {
-    const res = await fetch("http://localhost:4000/resources");
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("User not authenticated");
+    }
+
+    const res = await fetch("http://localhost:4000/resources", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
     const resources = await res.json();
     return resources;
   } catch (error) {
@@ -10,25 +21,39 @@ export const fetchResources = createAsyncThunk("fetch/Resources", async (_, thun
   }
 });
 
-export const addResource = createAsyncThunk(
-  "add/Resource",
+export const addResourceToInventory = createAsyncThunk(
+  "resources/addToInventory",
   async (resourceName, thunkAPI) => {
     try {
-      const res = await fetch("http://localhost:4000/resources", {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("User not authenticated");
+      }
+
+      const res = await fetch(`http://localhost:4000/resources`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ name: resourceName }),
       });
 
-      const resource = await res.json();
-      return resource;
+      const updatedResource = await res.json();
+
+      if (updatedResource.error) {
+        return thunkAPI.rejectWithValue(updatedResource.error);
+      }
+
+      return updatedResource;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      console.error("Error occurred during resource addition:", error);
+      return thunkAPI.rejectWithValue("Ошибка при добавлении ресурса");
     }
   }
 );
+
 
 export const removeResource = createAsyncThunk(
   "remove/Resource",
@@ -69,7 +94,7 @@ const resourceSlice = createSlice({
         state.loading = false;
         state.error = action.error.message; // Сохраняем только сообщение об ошибке
       })
-      .addCase(addResource.fulfilled, (state, action) => {
+      .addCase(addResourceToInventory.fulfilled, (state, action) => {
         state.resources = [...state.resources, action.payload];
       })
       .addCase(removeResource.fulfilled, (state, action) => {

@@ -1,29 +1,24 @@
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "../../components/Header/header.jsx";
-// import { userGet } from "../../reducer/applicationSlice.jsx";
-// import { useDispatch, useSelector } from "react-redux";
+import { getUserInfo } from "../../reducer/userSlice.jsx";
 
 const User = () => {
-  // const dispatch = useDispatch();
-  // const { token, user, loading, error } = useSelector((state) => state.application);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.users.user);
 
-  // useEffect(() => {
-  //   if (token) {
-  //     dispatch(userGet());
-  //   }
-  // }, [dispatch, token]);
+  useEffect(() => {
+    dispatch(getUserInfo());
+  }, [dispatch]);
 
-  // if (!token) {
-  //   return <p>No token available</p>;
-  // }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  };
 
-  // if (loading) {
-  //   return <p>Loading...</p>;
-  // }
-
-  // if (error) {
-  //   return <p>Error: {error}</p>;
-  // }
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -31,15 +26,24 @@ const User = () => {
         <Header />
       </div>
       <div>
-        Игрок
-        {/* Имя: {user ? user.login : "Нет данных"}
-        ХП: {user ? user.hp : "Нет данных"}
-        Энергия: {user ? user.energy : "Нет данных"}
-        Кошелек: {user ? user.wallet : "Нет данных"}
-        Инвентарь: {user ? user.inventory : "Нет данных"} */}
+        <p>
+          Имя: {user.login}
+        </p>
+        <p>
+          ХП: {user.hp}
+        </p>
+        <p>
+          Энергия: {user.energy}
+        </p>
+        <p>
+          Кошелек: {user.wallet}
+        </p>
+        <p>
+          Инвентарь: {JSON.stringify(user.inventory)}
+        </p>
       </div>
       <div>
-        <p>Выйти</p>
+        <button onClick={handleLogout}>Выйти</button>
       </div>
     </div>
   );

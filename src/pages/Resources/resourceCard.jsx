@@ -4,7 +4,7 @@ import styles from "./resource.module.scss";
 const ResourceCard = ({ resourceName, count, onClick, loading, loadingEat, imagePath, onEat }) => {
     return (
       <div className={styles.card}>
-        <img src={imagePath} alt={resourceName} />
+        <img src={imagePath} />
         <p>
           {resourceName}: {count}
         </p>

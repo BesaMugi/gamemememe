@@ -56,33 +56,37 @@ export const authSignUp = createAsyncThunk(
     }
   }
 );
-// export const userGet = createAsyncThunk("user/userGet", async (_, thunkAPI) => {
-//   try {
-//     const state = thunkAPI.getState();
-//     const token = state.auth.token;
 
-//     if (!token) {
-//       throw new Error("No token available");
-//     }
+export const getUserInfo = createAsyncThunk(
+  "auth/getUserInfo",
+  async (thunkAPI) => {
+    try {
+      const token = localStorage.getItem("token");
 
-//     const res = await fetch("http://localhost:4000/user", {
-//       headers: {
-//         Authorization: token,
-//       },
-//     });
+      if (!token) {
+        return;
+      }
 
-//     if (!res.ok) {
-//       throw new Error("Error fetching user");
-//     }
+      const res = await fetch("http://localhost:4000/profile", {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
 
-//     const user = await res.json();
-//     return user;
-//   } catch (error) {
-//     console.error("Error in userGet action creator:", error);
-//     throw new Error("Error fetching user");
-//   }
-// });
+      const userInfo = await res.json();
 
+      if (userInfo.error) {
+        return thunkAPI.rejectWithValue(userInfo.error);
+      }
+
+      return userInfo;
+    } catch (error) {
+      console.error("Error occurred during user info fetching:", error);
+      return thunkAPI.rejectWithValue("Ошибка при получении информации о пользователе");
+    }
+  }
+);
 
 
 const authSlices = createSlice({
@@ -100,9 +104,10 @@ const authSlices = createSlice({
         state.error = null
       })
       .addCase(authSignIn.fulfilled, (state, action) => {
-        state.loading = false
+        state.loading = false;
         if (action.payload) {
           state.token = action.payload;
+          state.user = { login: action.payload.login }; // Добавляем информацию о пользователе
         }
       })
       .addCase(authSignIn.rejected, (state) => {
@@ -122,20 +127,20 @@ const authSlices = createSlice({
         state.error = action.payload ? action.payload : 'Ошибка при регистрации';
       })
 
-      // .addCase(userGet.pending, (state) => {
-      //   state.loading = true;
-      // })
-      // .addCase(userGet.fulfilled, (state, action) => {
-      //   state.loading = false;
-      //   state.error = null;
-      //   state.user = action.payload;
-      //   console.log(state.user)
-      // })
-      // .addCase(userGet.rejected, (state, action) => {
-      //   state.loading = false;
-      //   state.error =
-      //     action.error.message || "Ошибка получении пользователя";
-      // })
+      .addCase(getUserInfo.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUserInfo.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload) {
+          state.user = action.payload;
+        }
+      })
+      .addCase(getUserInfo.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ? action.payload : 'Ошибка при получении информации о пользователе';
+      })
   },
 });
 
