@@ -20,27 +20,26 @@ const User = () => {
     return <div>Loading...</div>;
   }
 
+  const formattedInventory = Object.entries(user.inventory).map(([itemName, quantity]) => (
+    <p key={itemName}>
+      {itemName}: {quantity}
+    </p>
+  ));
+
   return (
     <div>
       <div>
         <Header />
       </div>
       <div>
-        <p>
-          Имя: {user.login}
-        </p>
-        <p>
-          ХП: {user.hp}
-        </p>
-        <p>
-          Энергия: {user.energy}
-        </p>
-        <p>
-          Кошелек: {user.wallet}
-        </p>
-        <p>
-          Инвентарь: {JSON.stringify(user.inventory)}
-        </p>
+        <h3>Имя: {user.login}</h3>
+        <p>ХП: {user.hp}</p>
+        <p>Энергия: {user.energy}</p>
+        <p>Кошелек: {user.wallet}</p>
+        <div>
+          <h3>Инвентарь:</h3>
+          {formattedInventory}
+        </div>
       </div>
       <div>
         <button onClick={handleLogout}>Выйти</button>
