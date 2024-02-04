@@ -19,11 +19,12 @@ export const fetchResources = createAsyncThunk("fetch/Resources", async (_, thun
   } catch (error) {
     return thunkAPI.rejectWithValue(error);
   }
-});
+}
+);
 
-export const addResourceToInventory = createAsyncThunk(
-  "resources/addToInventory",
-  async (resourceName, thunkAPI) => {
+export const updateResourcePriceAndLevel = createAsyncThunk(
+  "resources/updateResourcePriceAndLevel",
+  async ({ resourceName, newPrice, newLevel, newPriceUpgrade }, thunkAPI) => {
     try {
       const token = localStorage.getItem("token");
 
@@ -31,56 +32,58 @@ export const addResourceToInventory = createAsyncThunk(
         throw new Error("User not authenticated");
       }
 
-      const res = await fetch(`http://localhost:4000/resources`, {
-        method: "POST",
+      const response = await fetch("http://localhost:4000/resources/update-price-level", {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ name: resourceName }),
+        body: JSON.stringify({ resourceName, newPrice, newLevel, newPriceUpgrade }),
       });
 
-      const updatedResource = await res.json();
+      const data = await response.json();
 
-      if (updatedResource.error) {
-        return thunkAPI.rejectWithValue(updatedResource.error);
+      if (response.ok) {
+        return data.updatedResource;  // Return the updated resource from the server
+      } else {
+        return thunkAPI.rejectWithValue(data.error);
       }
-
-      return updatedResource;
     } catch (error) {
-      console.error("Error occurred during resource addition:", error);
-      return thunkAPI.rejectWithValue("Ошибка при добавлении ресурса");
+      console.error("Error sending request to the server:", error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
+export const getUserResources = createAsyncThunk(
+  "resources/getUserResources",
+  async (_, thunkAPI) => {
+    try {
+      const token = localStorage.getItem("token");
 
-export const removeResource = createAsyncThunk(
-  "remove/Resource",
-  async (resourceName, thunkAPI) => {
-      try {
-          const token = localStorage.getItem("token");
-
-          if (!token) {
-              throw new Error("Token is not defined");
-          }
-
-          const response = await fetch(`http://localhost:4000/resources/eat/Ягоды`, {
-              method: 'DELETE',
-              headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${localStorage.getItem('token')}`,
-              },
-          });
-
-          if (response.ok) {
-              return resourceName;
-          } else if (response.status === 404) {
-              return thunkAPI.rejectWithValue("Resource not found");
-          }
-      } catch (error) {
-          return thunkAPI.rejectWithValue(error);
+      if (!token) {
+        throw new Error("User not authenticated");
       }
+
+      const response = await fetch("http://localhost:4000/user-resources", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        return data;
+      } else {
+        return thunkAPI.rejectWithValue(data.error);
+      }
+    } catch (error) {
+      console.error("Ошибка при получении ресурсов пользователя:", error);
+      return thunkAPI.rejectWithValue(error);
+    }
   }
 );
 
@@ -106,12 +109,18 @@ const resourceSlice = createSlice({
         state.loading = false;
         state.error = action.error.message; // Сохраняем только сообщение об ошибке
       })
-      .addCase(addResourceToInventory.fulfilled, (state, action) => {
-        state.resources = [...state.resources, action.payload];
+
+      .addCase(updateResourcePriceAndLevel.fulfilled, (state, action) => {
+        const updatedResource = action.payload;
+        state.resources = state.resources.map((resource) =>
+           resource.name === updatedResource.name ? { ...updatedResource } : resource
+        );
+        state.loading = false;
+     })
+
+      .addCase(getUserResources.fulfilled, (state, action) => {
+        state.resources = action.payload
       })
-      .addCase(removeResource.fulfilled, (state, action) => {
-        state.resources = state.resources.filter((r) => r.name !== action.payload.name);
-      });
   },
 });
 

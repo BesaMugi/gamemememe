@@ -15,6 +15,7 @@ import Login from "./components/Authorization/login";
 import Registration from "./components/Authorization/registration";
 import Home from "./components/Home/home";
 import User from "./pages/User/user";
+import ResourcesShop from "./pages/Shop/Resources/resourcesShop";
 
 function App() {
   const token = useSelector((state) => state.application.token);
@@ -55,6 +56,7 @@ function App() {
         <Route path="/tools" element={<Tools />} />
         <Route path="/weapons" element={<Weapons />} />
         <Route path="/workers" element={<Workers />} />
+        <Route path="/shop_resources" element={<ResourcesShop /> } />
       </Routes>
     </Router>
   );

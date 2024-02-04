@@ -14,6 +14,9 @@ const ShopApp = () => {
         <Header />
       </div>
       <div className={styles.sidebar}>
+      <Link to="/shop_resources" className={styles.menuItem}>
+          Ресурсы
+        </Link>
         <Link to="/shop" className={styles.menuItem}>
           Рынок
         </Link>

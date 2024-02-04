@@ -20,11 +20,14 @@ const User = () => {
     return <div>Loading...</div>;
   }
 
-  const formattedInventory = Object.entries(user.inventory).map(([itemName, quantity]) => (
-    <p key={itemName}>
-      {itemName}: {quantity}
-    </p>
-  ));
+  const formattedInventory = user.inventory
+  ? Object.entries(user.inventory).map(([itemName, quantity]) => (
+      <p key={itemName}>
+        {itemName}: {quantity}
+      </p>
+    ))
+  : null;
+
 
   return (
     <div>

@@ -39,7 +39,7 @@ export const getUserInfo = createAsyncThunk(
 
 export const updateUserInventory = createAsyncThunk(
     "update/inventory",
-    async ({ userId, inventory }, thunkAPI) => {
+    async ({ userId, inventory, resourceName, price }, thunkAPI) => {
       try {
         const token = localStorage.getItem("token");
   
@@ -53,10 +53,16 @@ export const updateUserInventory = createAsyncThunk(
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ inventory }),
+          body: JSON.stringify({ inventory, resourceName, price }),
         });
-  
+
         const updatedUser = await res.json();
+        
+        thunkAPI.dispatch({
+          type: updateUserInventory.fulfilled.type,
+          payload: updatedUser,
+        });
+        
         return updatedUser;
       } catch (error) {
         return thunkAPI.rejectWithValue(error);
@@ -97,6 +103,35 @@ export const updateUserInventory = createAsyncThunk(
     }
   );
   
+  export const eatFood = createAsyncThunk("update/eating", async ({userId, itemName}, thunkAPI) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if(!token) {
+        throw new Error("User not authenticated");
+      }
+
+      const res = await fetch(`http://localhost:4000/users/${userId}/eatItem`, {
+        method: "PATCH",
+        header: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ itemName: name }),
+      });
+
+      const updaterUser = await res.json();
+
+      if (updaterUser.error) {
+        return thunkAPI.rejectWithValue(updaterUser.error);
+      }
+
+      return updaterUser;
+    } catch (error) {
+      console.error("Error occurred during eating", error)
+      return thunkAPI.rejectWithValue("Ошибка при поедании пищи")
+    }
+  });
   
 
 
@@ -126,10 +161,14 @@ const userSlice = createSlice({
       })
 
       .addCase(updateUserInventory.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.user = { ...state.user, inventory: action.payload.inventory };
       })
 
       .addCase(updateUserEnergy.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+
+      .addCase(eatFood.fulfilled, (state, action) => {
         state.user = action.payload;
       })
   },

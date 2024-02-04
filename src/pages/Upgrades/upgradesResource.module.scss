@@ -1,0 +1,60 @@
+.container {
+
+    .wallet {
+        position: fixed;
+        width: 140px;
+        font-size: 20px;
+        text-align: center;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    .cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .card {
+            margin: 0 10px;
+            border-radius: 8px;
+            border: 1px solid grey;
+            width: 260px;
+            text-align: center;
+            padding: 5px;
+            margin-bottom: 10px;
+
+            &:hover {
+                border-color: #9f64ff;
+            }
+
+            img {
+                margin-top: 10px;
+                width: 60px;
+            }
+
+            button {
+                border-radius: 8px;
+                border: 1px solid transparent;
+                padding: 10px;
+                font-size: 16px;
+                font-weight: 500;
+                background-color: #1a1a1a;
+                cursor: pointer;
+                user-select: none;
+                margin: 10px;
+                width: 100px;
+
+                &:hover {
+                    border-color: #646cff;
+                }
+
+                &:focus,
+                &:focus-visible {
+                    outline: 4px auto -webkit-focus-ring-color;
+                }
+            }
+        }
+    }
+}
