@@ -24,7 +24,7 @@ const Upgrades = () => {
       let baseUpgradePrice = 120;
 
       // Установим цену улучшения в 0, если уровень ресурса 0
-      let calculatedUpgradePrice = resource.level === 0 ? 0 : (resource.level + 1) * baseUpgradePrice;
+      let calculatedUpgradePrice = resource.level === 0 ? 0 : (resource.level + 1) * baseUpgradePrice * 2.5;
 
       await dispatch(updateResourcePriceAndLevel({
         resourceName: "Ягоды",
@@ -52,7 +52,7 @@ const Upgrades = () => {
       const baseUpgradePrice = 80;
 
       // Установим цену улучшения в 0, если уровень ресурса 0
-      let calculatedUpgradePrice = resource.level === 0 ? 0 : (resource.level + 1) * baseUpgradePrice;
+      let calculatedUpgradePrice = resource.level === 0 ? 0 : (resource.level + 1) * baseUpgradePrice * 2.5;
 
       // Обновляем ресурс только если у пользователя достаточно средств
       await dispatch(updateResourcePriceAndLevel({
@@ -83,7 +83,7 @@ const Upgrades = () => {
       const baseUpgradePrice = 40;
 
       // Установим цену улучшения в 0, если уровень ресурса 0
-      let calculatedUpgradePrice = resource.level === 0 ? 0 : (resource.level + 1) * baseUpgradePrice;
+      let calculatedUpgradePrice = resource.level === 0 ? 0 : (resource.level + 1) * baseUpgradePrice * 2.5;
 
       // Обновляем ресурс только если у пользователя достаточно средств
       await dispatch(updateResourcePriceAndLevel({
@@ -120,7 +120,9 @@ const Upgrades = () => {
           Кошелек: {user.wallet} $
         </div>
       )}
+      <h1>РАЗОБРАТЬСЯ С ЦЕНОВОЙ ПОЛИТИКОЙ УЛУЧШЕНИЯ РЕСУРСОВ</h1>
       <h2>Улучшение ресурсов:</h2>
+
       <div className={styles.cards}>
         {userResources &&
           userResources.map((resource) => (
@@ -132,7 +134,10 @@ const Upgrades = () => {
                   isOpen={() => handleUpgradeBerries(resource._id)}
                   level={resource.level}
                   price={resource.price}
-                  priceUpgrade={resource.level === 1 ? 240 : resource.priceUpgrade + 120}
+                  //сначала надо передать 1 уровню цену вручную (например базовая цена 120 и она почему в коде умножается на 2 = 240 и 240 умножается
+                  // на 2.5 по условии, а это 600 и это число указываем и также придется указывать другим ресурсам),
+                  // а потом далее рендерить цену умножив базовую цену на указанную цену
+                  priceUpgrade={resource.level === 1 ? 600 : resource.priceUpgrade + 120 * 2.5}
                   imagePath="/images/190034.png"
                 />
               )}
@@ -143,7 +148,7 @@ const Upgrades = () => {
                   isOpen={() => handleUpgradeGrass(resource._id)}
                   level={resource.level}
                   price={resource.price}
-                  priceUpgrade={resource.level === 1 ? 160 : resource.priceUpgrade + 80}
+                  priceUpgrade={resource.level === 1 ? 400 : resource.priceUpgrade + 80 * 2.5}
                   imagePath="/images/190034.png"
                 />
               )}
@@ -154,7 +159,7 @@ const Upgrades = () => {
                   isOpen={() => handleUpgradeFlint(resource._id)}
                   level={resource.level}
                   price={resource.price}
-                  priceUpgrade={resource.level === 1 ? 80 : resource.priceUpgrade + 40}
+                  priceUpgrade={resource.level === 1 ? 200 : resource.priceUpgrade + 40 * 2.5}
                   imagePath="/images/190034.png"
                 />
               )}
