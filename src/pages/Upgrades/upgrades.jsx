@@ -21,7 +21,7 @@ const Upgrades = () => {
       }
 
       // Рассчитываем базовую цену улучшения (может быть константой или храниться в конфиге)
-      let baseUpgradePrice = 240;
+      let baseUpgradePrice = 120;
 
       // Установим цену улучшения в 0, если уровень ресурса 0
       let calculatedUpgradePrice = resource.level === 0 ? 0 : (resource.level + 1) * baseUpgradePrice;
@@ -49,7 +49,7 @@ const Upgrades = () => {
         return console.error("Недостаточно средств для улучшения ресурса");
       }
 
-      const baseUpgradePrice = 160;
+      const baseUpgradePrice = 80;
 
       // Установим цену улучшения в 0, если уровень ресурса 0
       let calculatedUpgradePrice = resource.level === 0 ? 0 : (resource.level + 1) * baseUpgradePrice;
@@ -80,7 +80,7 @@ const Upgrades = () => {
       }
 
       // Рассчитываем базовую цену улучшения (может быть константой или храниться в конфиге)
-      const baseUpgradePrice = 80;
+      const baseUpgradePrice = 40;
 
       // Установим цену улучшения в 0, если уровень ресурса 0
       let calculatedUpgradePrice = resource.level === 0 ? 0 : (resource.level + 1) * baseUpgradePrice;
@@ -132,7 +132,7 @@ const Upgrades = () => {
                   isOpen={() => handleUpgradeBerries(resource._id)}
                   level={resource.level}
                   price={resource.price}
-                  priceUpgrade={resource.priceUpgrade + 240}
+                  priceUpgrade={resource.level === 1 ? 240 : resource.priceUpgrade + 120}
                   imagePath="/images/190034.png"
                 />
               )}
@@ -143,7 +143,7 @@ const Upgrades = () => {
                   isOpen={() => handleUpgradeGrass(resource._id)}
                   level={resource.level}
                   price={resource.price}
-                  priceUpgrade={resource.priceUpgrade + 160}
+                  priceUpgrade={resource.level === 1 ? 160 : resource.priceUpgrade + 80}
                   imagePath="/images/190034.png"
                 />
               )}
@@ -154,7 +154,7 @@ const Upgrades = () => {
                   isOpen={() => handleUpgradeFlint(resource._id)}
                   level={resource.level}
                   price={resource.price}
-                  priceUpgrade={resource.priceUpgrade + 80}
+                  priceUpgrade={resource.level === 1 ? 80 : resource.priceUpgrade + 40}
                   imagePath="/images/190034.png"
                 />
               )}
