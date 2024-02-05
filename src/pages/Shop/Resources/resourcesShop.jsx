@@ -7,17 +7,11 @@ import ShopApp from "../shopApp";
 const ResourcesShop = () => {
     const dispatch = useDispatch();
     const resources = useSelector((state) => state.resources.resources);
+    const user = useSelector((state) => state.users.user);
 
     useEffect(() => {
         dispatch(fetchResources());
     }, [dispatch]);
-
-    const addPriceToResources = () => {
-        // Ваша логика для добавления цен к ресурсам
-        // Здесь вы можете использовать данные из бекенда, чтобы присвоить цены
-        // resources - массив ресурсов из Redux store
-        // Диспатч экшена для обновления цен в store, если необходимо
-      };
 
     return (
         <>

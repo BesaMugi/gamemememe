@@ -4,7 +4,7 @@ import { fetchResources } from "../../reducer/resourceSlice.jsx";
 import styles from "./resource.module.scss";
 import Header from "../../components/Header/header.jsx";
 import ResourceCard from "./resourceCard.jsx";
-import { getUserInfo, updateUserInventory, updateUserEnergy } from "../../reducer/userSlice.jsx";
+import { getUserInfo, updateUserInventory, updateUserEnergy, eatFood } from "../../reducer/userSlice.jsx";
 
 const Resources = () => {
   const dispatch = useDispatch();
@@ -45,6 +45,29 @@ const Resources = () => {
     }
   };
 
+  const handleBerriesEat = async () => {
+    try {
+      setLoadingBerriesEat(true);
+
+      dispatch(eatFood({ userId: user._id, itemName: 'Ягоды' }))
+        .then((result) => {
+          if (eatFood.fulfilled.match(result)) {
+            dispatch(getUserInfo());
+          }
+        })
+        .catch((error) => {
+          console.error("Ошибка при съедании Ягоды:", error);
+        })
+        .finally(() => {
+          setLoadingBerriesEat(false);
+        });
+
+    } catch (error) {
+      console.error("Ошибка при съедании Ягоды:", error);
+    } finally {
+      setLoadingBerriesEat(false);
+    }
+  };
 
   const handleClickGrass = async () => {
     try {
@@ -117,6 +140,7 @@ const Resources = () => {
             resourceName="Ягоды"
             count={berriesCount}
             onClick={handleClickBerries}
+            onEat={handleBerriesEat}
             loading={loadingBerries}
             imagePath="/images/190034.png"
           />

@@ -103,35 +103,36 @@ export const updateUserInventory = createAsyncThunk(
     }
   );
   
-  export const eatFood = createAsyncThunk("update/eating", async ({userId, itemName}, thunkAPI) => {
+  export const eatFood = createAsyncThunk("update/eating", async ({ userId, itemName }, thunkAPI) => {
     try {
       const token = localStorage.getItem("token");
-
-      if(!token) {
+  
+      if (!token) {
         throw new Error("User not authenticated");
       }
-
+  
       const res = await fetch(`http://localhost:4000/users/${userId}/eatItem`, {
         method: "PATCH",
-        header: {
+        headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ itemName: name }),
+        body: JSON.stringify({ itemName }),
       });
-
-      const updaterUser = await res.json();
-
-      if (updaterUser.error) {
-        return thunkAPI.rejectWithValue(updaterUser.error);
+  
+      const updatedUser = await res.json();
+  
+      if (res.ok) {
+        return updatedUser;
+      } else {
+        throw new Error(updatedUser.error || "Ошибка при поедании пищи");
       }
-
-      return updaterUser;
     } catch (error) {
-      console.error("Error occurred during eating", error)
-      return thunkAPI.rejectWithValue("Ошибка при поедании пищи")
+      console.error("Error occurred during eating", error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   });
+  
   
 
 
