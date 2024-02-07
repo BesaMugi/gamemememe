@@ -26,7 +26,7 @@ const Resource = () => {
       <Link to={"/dungeons"} className={isActive("/dungeons") ? styles.active : ""}>
         <p>Данжи</p>
       </Link>
-      <Link to={"/shopApp"} className={isActive("/shopApp") ? styles.active : ""}>
+      <Link to={"/shop"} className={isActive("/shop") ? styles.active : ""}>
         <p>Рынок</p>
       </Link>
       <Link to={"/upgrades"} className={isActive("/upgrades") ? styles.active : ""}>

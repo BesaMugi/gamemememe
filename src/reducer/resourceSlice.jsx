@@ -87,6 +87,38 @@ export const getUserResources = createAsyncThunk(
   }
 );
 
+export const sellResource = createAsyncThunk(
+  "resources/sellResource",
+  async ({ userId, resourceName }, thunkAPI) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("User not authenticated");
+      }
+
+      const response = await fetch(`http://localhost:4000/users/${userId}/sellResource`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ resourceName }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to sell resource");
+      }
+
+      // Возвращаем userId и resourceName, чтобы можно было позже обновить соответствующие данные в Redux store
+      return { userId, resourceName };
+    } catch (error) {
+      console.error("Ошибка при продаже реурса")
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const resourceSlice = createSlice({
   name: "resources",
   initialState: {
@@ -113,13 +145,27 @@ const resourceSlice = createSlice({
       .addCase(updateResourcePriceAndLevel.fulfilled, (state, action) => {
         const updatedResource = action.payload;
         state.resources = state.resources.map((resource) =>
-           resource.name === updatedResource.name ? { ...updatedResource } : resource
+          resource.name === updatedResource.name ? { ...updatedResource } : resource
         );
         state.loading = false;
-     })
+      })
 
       .addCase(getUserResources.fulfilled, (state, action) => {
         state.resources = action.payload
+      })
+
+      .addCase(sellResource.fulfilled, (state, action) => {
+        // Добавляем или обновляем ресурсы в стейте
+        const updatedResources = state.resources.map(resource => {
+          if (resource.user === action.payload.userId && resource.name === action.payload.resourceName) {
+            // Обновляем количество ресурса после продажи
+            return { ...resource, count: resource.count - 1 };
+          }
+          return resource;
+        });
+      
+        // Обновляем состояние
+        state.resources = updatedResources;
       })
   },
 });

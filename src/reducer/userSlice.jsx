@@ -103,7 +103,7 @@ export const updateUserInventory = createAsyncThunk(
     }
   );
   
-  export const eatFood = createAsyncThunk("update/eating", async ({ userId, itemName }, thunkAPI) => {
+  export const eatFood = createAsyncThunk("update/eating", async ({ userId, itemName, energyToAdd }, thunkAPI) => {
     try {
       const token = localStorage.getItem("token");
   
@@ -117,7 +117,7 @@ export const updateUserInventory = createAsyncThunk(
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ itemName }),
+        body: JSON.stringify({ itemName, energyToAdd }),
       });
   
       const updatedUser = await res.json();
@@ -132,9 +132,6 @@ export const updateUserInventory = createAsyncThunk(
       return thunkAPI.rejectWithValue(error.message);
     }
   });
-  
-  
-
 
 const userSlice = createSlice({
   name: "users",

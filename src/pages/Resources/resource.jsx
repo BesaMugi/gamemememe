@@ -49,7 +49,7 @@ const Resources = () => {
     try {
       setLoadingBerriesEat(true);
 
-      dispatch(eatFood({ userId: user._id, itemName: 'Ягоды' }))
+      dispatch(eatFood({ userId: user._id, itemName: 'Ягоды', energyToAdd: 3 }))
         .then((result) => {
           if (eatFood.fulfilled.match(result)) {
             dispatch(getUserInfo());
