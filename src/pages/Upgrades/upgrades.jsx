@@ -28,7 +28,7 @@ const Upgrades = () => {
 
       await dispatch(updateResourcePriceAndLevel({
         resourceName: "Ягоды",
-        newPrice: 5,
+        newPrice: 3,
         newLevel: 1,
         newPriceUpgrade: calculatedUpgradePrice
       }));
@@ -57,7 +57,7 @@ const Upgrades = () => {
       // Обновляем ресурс только если у пользователя достаточно средств
       await dispatch(updateResourcePriceAndLevel({
         resourceName: "Трава",
-        newPrice: 2,
+        newPrice: 1,
         newLevel: 1,
         newPriceUpgrade: calculatedUpgradePrice
       }));
@@ -88,7 +88,7 @@ const Upgrades = () => {
       // Обновляем ресурс только если у пользователя достаточно средств
       await dispatch(updateResourcePriceAndLevel({
         resourceName: "Кремень",
-        newPrice: 1,
+        newPrice: 2,
         newLevel: 1,
         newPriceUpgrade: calculatedUpgradePrice
       }));
@@ -120,7 +120,7 @@ const Upgrades = () => {
           Кошелек: {user.wallet} $
         </div>
       )}
-      <h1>РАЗОБРАТЬСЯ С ЦЕНОВОЙ ПОЛИТИКОЙ УЛУЧШЕНИЯ РЕСУРСОВ</h1>
+      {/* <h1>РАЗОБРАТЬСЯ С ЦЕНОВОЙ ПОЛИТИКОЙ УЛУЧШЕНИЯ РЕСУРСОВ</h1> */}
       <h2>Улучшение ресурсов:</h2>
 
       <div className={styles.cards}>

@@ -20,24 +20,27 @@ const Resources = () => {
   const [loadingBerriesEat, setLoadingBerriesEat] = useState(false);
   const [loadingGrass, setLoadingGrass] = useState(false);
   const [loadingFlint, setLoadingFlint] = useState(false);
-  const [isPricesInitialized, setIsPricesInitialized] = useState(false);
 
   const handleClickBerries = async () => {
     try {
-      setLoadingBerries(true);
+      if (user.energy <= -1) {
+        alert("У вас недостаточно энергии для добычи ресурсов");
+        return;
+      }
 
+      setLoadingBerries(true);
       const inventory = user.inventory || {};
       const updatedInventory = {
         ...inventory,
         Ягоды: (inventory.Ягоды || 0) + 1,
       };
 
-      dispatch(updateUserInventory({
+      await dispatch(updateUserInventory({
         userId: user._id,
         inventory: updatedInventory,
-        resourceName: 'Ягоды'
+        resourceName: "Ягоды"
       }));
-      await dispatch(updateUserEnergy({ userId: user._id, energyChange: -1 }));
+      await dispatch(updateUserEnergy({ userId: user._id, energyChange: -2 }));
     } catch (error) {
       console.error("Ошибка при добавлении ресурса:", error);
     } finally {
@@ -49,18 +52,23 @@ const Resources = () => {
     try {
       setLoadingBerriesEat(true);
 
-      dispatch(eatFood({ userId: user._id, itemName: 'Ягоды', energyToAdd: 3 }))
-        .then((result) => {
-          if (eatFood.fulfilled.match(result)) {
-            dispatch(getUserInfo());
-          }
-        })
-        .catch((error) => {
-          console.error("Ошибка при съедании Ягоды:", error);
-        })
-        .finally(() => {
-          setLoadingBerriesEat(false);
-        });
+      if (user.energy <= 100) {
+        dispatch(eatFood({ userId: user._id, itemName: 'Ягоды', energyToAdd: 4 }))
+          .then((result) => {
+            if (eatFood.fulfilled.match(result)) {
+              dispatch(getUserInfo());
+            }
+          })
+          .catch((error) => {
+            console.error("Ошибка при съедании Ягоды:", error);
+          })
+          .finally(() => {
+            setLoadingBerriesEat(false);
+          });
+      } else {
+        alert("Энергия максимальная!")
+      }
+
 
     } catch (error) {
       console.error("Ошибка при съедании Ягоды:", error);
@@ -71,19 +79,25 @@ const Resources = () => {
 
   const handleClickGrass = async () => {
     try {
+      // Проверка наличия энергии
+      if (user.energy <= 0) {
+        alert("У вас недостаточно энергии для добычи ресурсов");
+        return;
+      }
+
       setLoadingGrass(true);
       const inventory = user.inventory || {};
       const updatedInventory = {
         ...inventory,
-        Трава: (inventory.Трава || 0) + 1,
+        Трава: (inventory.Трава || 0) + 3,
       };
 
-      dispatch(updateUserInventory({
+      await dispatch(updateUserInventory({
         userId: user._id,
         inventory: updatedInventory,
         resourceName: "Трава"
       }));
-      await dispatch(updateUserEnergy({ userId: user._id, energyChange: -1 }));
+      await dispatch(updateUserEnergy({ userId: user._id, energyChange: -2 }));
     } catch (error) {
       console.error("Ошибка при добавлении ресурса:", error);
     } finally {
@@ -93,6 +107,12 @@ const Resources = () => {
 
   const handleClickFlint = async () => {
     try {
+      // Проверка наличия энергии
+      if (user.energy <= 0) {
+        alert("У вас недостаточно энергии для добычи ресурсов");
+        return;
+      }
+
       setLoadingFlint(true);
       const inventory = user.inventory || {};
       const updatedInventory = {
@@ -100,7 +120,7 @@ const Resources = () => {
         Кремень: (inventory.Кремень || 0) + 1,
       };
 
-      dispatch(updateUserInventory({
+      await dispatch(updateUserInventory({
         userId: user._id,
         inventory: updatedInventory,
         resourceName: "Кремень"

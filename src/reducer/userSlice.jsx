@@ -133,6 +133,37 @@ export const updateUserInventory = createAsyncThunk(
     }
   });
 
+  export const updateUserWallet = createAsyncThunk(
+    "update/userWallet",
+    async ({ userId, newWalletValue }, thunkAPI) => {
+      try {
+        const token = localStorage.getItem("token");
+  
+        if (!token) {
+          throw new Error("User not authenticated");
+        }
+        const res = await fetch(`http://localhost:4000/users/${userId}/update-wallet`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ newWalletValue }),
+        });
+  
+        const updatedUser = await res.json();
+  
+        if (updatedUser.error) {
+          return thunkAPI.rejectWithValue(updatedUser.error);
+        }
+  
+        return updatedUser;
+      } catch (error) {
+        console.error("Error occurred during user wallet update:", error);
+        return thunkAPI.rejectWithValue("Ошибка при обновлении кошелька пользователя");
+      }
+    });
+  
 const userSlice = createSlice({
   name: "users",
   initialState,
@@ -167,6 +198,10 @@ const userSlice = createSlice({
       })
 
       .addCase(eatFood.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+
+      .addCase(updateUserWallet.fulfilled, (state, action) => {
         state.user = action.payload;
       })
   },

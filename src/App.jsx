@@ -16,6 +16,7 @@ import Registration from "./components/Authorization/registration";
 import Home from "./components/Home/home";
 import User from "./pages/User/user";
 import ResourcesShop from "./pages/Shop/Resources/resourcesShop";
+import StoneScissoresPaper from "./pages/Games/stoneScissoresPaper/gameStoneScissoresPaper";
 
 function App() {
   const token = useSelector((state) => state.application.token);
@@ -37,6 +38,7 @@ function App() {
         <Route path="/tools" element={<Navigate to="/" />} />
         <Route path="/weapons" element={<Navigate to="/" />} />
         <Route path="/workers" element={<Navigate to="/" />} />
+        <Route path="/gameSSP" element={<Navigate to="/" />}/>
       </Routes>
     </Router>
   ) : (
@@ -57,6 +59,7 @@ function App() {
         <Route path="/weapons" element={<Weapons />} />
         <Route path="/workers" element={<Workers />} />
         <Route path="/shop_resources" element={<ResourcesShop /> } />
+        <Route path="/gameSSP" element={ <StoneScissoresPaper/> }/>
       </Routes>
     </Router>
   );

@@ -1,7 +1,11 @@
 import React from "react";
 import Header from "../../components/Header/header.jsx";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Games = () => {
+  const user = useSelector((state) => state.users.user);
+
   return (
     <div>
       <div>
@@ -10,8 +14,10 @@ const Games = () => {
       <h1>Игры</h1>
       <div>
         <div>
-          <h3>Камень / Ножницы / Бумага:</h3>
+          <Link to={"/gameSSP"}> <h3>Камень / Ножницы / Бумага:</h3> </Link>
           <p>классическая игра, объяснений не надо</p>
+          <p>выигрышей: 0; проигрышей: 0; ничья: 0; выиграно денег: 0; если возможно и это все реализовать</p>
+          <Link to={"/gameSSP"}> <button>играть</button> </Link>
         </div>
         <div>
           <h3>Покемоны:</h3>

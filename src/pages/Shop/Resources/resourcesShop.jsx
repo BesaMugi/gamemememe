@@ -28,8 +28,8 @@ const ResourcesShop = () => {
             setLoadingData(true);
 
             // Запрос на получение ресурсов пользователя
-            await dispatch(getUserResources());
             await dispatch(getUserInfo());
+            await dispatch(getUserResources());
 
             // После успешного выполнения запросов сброс состояния
             setLoadingData(false);
